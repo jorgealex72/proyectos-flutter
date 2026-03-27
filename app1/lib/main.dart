@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   // Tu encabezado
                   const Text(
-                    'Bienvenido al Sistema',
+                    'Bienvenido al Sistema de Gestión',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 40),
