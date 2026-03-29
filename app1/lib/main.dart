@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'ventana_principal.dart';
+import 'database/db_helper.dart';
+import 'models/user_model.dart';
 
 void main() {
+  if (!kIsWeb) {
+    if (Platform.isWindows || Platform.isLinux) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+  }
   runApp(const MyApp());
 }
 
@@ -73,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   // Tu encabezado
                   const Text(
-                    'Bienvenido al Sistema de Gestión',
+                    'Bienvenido al Sistema',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 40),
@@ -119,13 +131,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         .infinity, // El botón ocupa todo el ancho de los 400px
                     height: 55,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // ... tu lógica de validación
                         // --- LÓGICA DE VALIDACIÓN ---
                         String user = _userController.text;
                         String pass = _passwordController.text;
 
-                        if (user == "admin" && pass == "admin") {
+                        final dbHelper = DbHelper();
+                        UserModel? usuarioEncontrado = await dbHelper.loginUser(user, pass);
+
+                        if (usuarioEncontrado != null) {
                           // Acceso concedido: Navegamos a la otra pantalla
                           _userController.clear();
                           _passwordController.clear();
@@ -133,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => VentanaPrincipal(),
+                              builder: (context) => VentanaPrincipal(usuario: usuarioEncontrado),
                             ),
                           );
                         } else {
@@ -142,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Credenciales incorrectas'),
+                              content: Text('Usuario o contraseña no encontrados en DB'),
                               backgroundColor: Colors.red,
                             ),
                           );

@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
-import 'menu_lateral.dart'; // Importamos el menú que creamos arriba
+import 'menu_lateral.dart';
+import 'models/user_model.dart';
 
 class VentanaPrincipal extends StatelessWidget {
-  const VentanaPrincipal({super.key});
+  final UserModel usuario;
+  const VentanaPrincipal({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Panel de Control'),
+      appBar: AppBar(title: Text('Panel de Control'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       // Aquí llamamos al archivo separado del menú
-      drawer: const MenuLateral(),
-      body: const Center(
+      drawer: MenuLateral(usuario: usuario),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.check_circle_outline, size: 80, color: Colors.green),
             SizedBox(height: 20),
             Text(
-              '¡Bienvenido al Sistema!',
+              '¡Bienvenido al Sistema! ${usuario.displayName}',
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
             Text('Acceso concedido exitosamente'),

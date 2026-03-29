@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'models/user_model.dart'; 
 
 class MenuLateral extends StatelessWidget {
-  const MenuLateral({super.key});
+  final UserModel usuario;
+  const MenuLateral({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +12,7 @@ class MenuLateral extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           // Encabezado del menú (como el perfil del usuario)
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(color: Colors.deepPurple),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,8 +21,12 @@ class MenuLateral extends StatelessWidget {
                 Icon(Icons.account_circle, size: 50, color: Colors.white),
                 SizedBox(height: 10),
                 Text(
-                  'Administrador',
+                  usuario.displayName,
                   style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                Text(
+                  usuario.username,
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ],
             ),
