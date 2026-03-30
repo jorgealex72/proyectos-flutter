@@ -82,34 +82,7 @@ class DbHelper {
     final db = await database;
     final passwordHash = _hashPassword(
       password,
-    ); // Hasheamos la clave ingresada
-
-    // final List<Map<String, dynamic>> users = await db.query('users');
-    // print('Usuarios en la DB: $users');
-
-    // await db.update(
-    //   'users',
-    //   {
-    //     'password_hash':
-    //         '240be518fab243812839f6931f7595eb1b67277559c159e8996c9356138e9b0b',
-    //   }, // Hash de 'admin123'
-    //   where: 'username = ?',
-    //   whereArgs: ['admin'],
-    // );
-    // print("Contraseña de admin reseteada a: admin123");
-
-    if (kIsWeb) {
-      // Si estamos en Chrome, validamos "a mano" sin tocar la DB
-      if (username == 'admin' && password == 'Minedu2024') {
-        return UserModel(
-          id: 1,
-          username: 'admin',
-          passwordHash: '',
-          displayName: 'Administrador Jorge (Mock)',
-        );
-      }
-      return null;
-    }
+    ); 
 
     final List<Map<String, dynamic>> maps = await db.query(
       'users',
